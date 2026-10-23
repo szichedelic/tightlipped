@@ -5,6 +5,6 @@ allowed-tools: ["Bash(node:*)"]
 
 Audit output:
 
-!`node "${CLAUDE_PLUGIN_ROOT}/doxguard.mjs" audit $ARGUMENTS`
+!`node "${CLAUDE_PLUGIN_ROOT}/tightlipped.mjs" audit $ARGUMENTS`
 
-Summarize the result for the user in a few lines: how many outbound calls would have been stopped, where they went, and how many pages asked the agent to identify the user. If any flagged call went to a domain the user clearly owns, suggest adding it to `allow_domains` in `~/.config/doxguard/config.json`.
+Summarize the result for the user in a few lines: how many outbound calls would have been stopped, where they went, and how many pages asked the agent to identify the user. If any flagged call went to a domain the user clearly owns, suggest adding it to `allow_domains` in `~/.config/tightlipped/config.json`.

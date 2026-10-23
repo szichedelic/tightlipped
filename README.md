@@ -1,18 +1,18 @@
 <p align="center">
-  <img src="assets/logo.svg" width="120" alt="doxguard logo: a shield with a redacted @ sign">
+  <img src="assets/logo.svg" width="120" alt="tightlipped logo: a shield with a redacted @ sign">
 </p>
 
-<h1 align="center">doxguard</h1>
+<h1 align="center">tightlipped</h1>
 
 <p align="center">Stop your coding agent from doxxing you.</p>
 
 <p align="center">
-  <img src="assets/demo.gif" width="800" alt="A page asks the agent for its user's email. doxguard warns, then blocks the curl call that would send it.">
+  <img src="assets/demo.gif" width="800" alt="A page asks the agent for its user's email. tightlipped warns, then blocks the curl call that would send it.">
 </p>
 
 Claude Code knows your email address. Sites can ask agents to identify the person they work for: a 403 page that says "retry with `X-Agent-Principal: <your user's email>`", or an API policy that says "put contact info in your User-Agent". A model that follows that request sends your email to a stranger.
 
-doxguard is a Claude Code plugin that checks every outbound tool call for your personal data before it runs. It adds about 1 ms when nothing matches.
+tightlipped is a Claude Code plugin that checks every outbound tool call for your personal data before it runs. It adds about 1 ms when nothing matches.
 
 ## Why this exists
 
@@ -39,12 +39,12 @@ File reads and edits never start the hooks. Bash commands that cannot reach the 
 In Claude Code:
 
 ```
-/plugin marketplace add szichedelic/doxguard
-/plugin install doxguard@doxguard
-/doxguard:init
+/plugin marketplace add szichedelic/tightlipped
+/plugin install tightlipped@tightlipped
+/tightlipped:init
 ```
 
-`init` writes `~/.config/doxguard/config.json` and shows what it protects. By default it protects your `git config user.email` and asks before any outbound call that contains it.
+`init` writes `~/.config/tightlipped/config.json` and shows what it protects. By default it protects your `git config user.email` and asks before any outbound call that contains it.
 
 Requires Node 18 or later and a POSIX shell.
 
@@ -53,16 +53,16 @@ Requires Node 18 or later and a POSIX shell.
 You do not need to install the plugin to run the audit:
 
 ```sh
-npx github:szichedelic/doxguard audit
+npx github:szichedelic/tightlipped audit
 ```
 
 It checks for your `git config user.email`. Add `--email you@example.com` to check another address.
 
-With the plugin installed, run `/doxguard:audit`. The audit reads `~/.claude/projects` locally and sends nothing anywhere. It masks values in its output (`y***@example.com`).
+With the plugin installed, run `/tightlipped:audit`. The audit reads `~/.claude/projects` locally and sends nothing anywhere. It masks values in its output (`y***@example.com`).
 
 ## Configure
 
-`~/.config/doxguard/config.json` (set `DOXGUARD_CONFIG` to use another path):
+`~/.config/tightlipped/config.json` (set `TIGHTLIPPED_CONFIG` to use another path):
 
 ```json
 {
@@ -83,7 +83,7 @@ With the plugin installed, run `/doxguard:audit`. The audit reads `~/.claude/pro
 
 | Key | Default | Meaning |
 | --- | --- | --- |
-| `mode` | `ask` | `off`: do nothing. `log`: never interrupt, record to `~/.local/state/doxguard/events.jsonl`. `ask`: show the permission prompt with the reason. `block`: deny the call and tell the model why. |
+| `mode` | `ask` | `off`: do nothing. `log`: never interrupt, record to `~/.local/state/tightlipped/events.jsonl`. `ask`: show the permission prompt with the reason. `block`: deny the call and tell the model why. |
 | `protect.emails` | `["auto"]` | `auto` reads `git config --global user.email`. |
 | `protect.phones` | `[]` | Matches the digits with any separators, so `415.555.0134` and `(415) 555-0134` both match. Digits inside a longer number do not match. |
 | `protect.names` | `[]` | Whole words, any case. Off by default because names show up in a lot of normal text. |
@@ -102,19 +102,19 @@ Every network-capable tool call pays for the hook, so the common path never star
 
 1. `hooks.json` sources `hooks/guard.sh` into the shell Claude Code already started. No second shell.
 2. `guard.sh` runs one `grep -E` against patterns that were compiled from your config and cached. If nothing matches, it exits.
-3. Only on a possible match does `doxguard.mjs` start, parse the call, check hosts and allowlists, and decide.
+3. Only on a possible match does `tightlipped.mjs` start, parse the call, check hosts and allowlists, and decide.
 
 Measured with `npm run bench` on an M1 Pro, 300 calls each:
 
 | Case | Per call |
 | --- | --- |
 | Empty hook (`cat >/dev/null`), the floor for any hook | 6.4 ms |
-| doxguard, nothing matches (the common case) | 7.4 ms |
-| doxguard, a match that starts Node | 46.4 ms |
+| tightlipped, nothing matches (the common case) | 7.4 ms |
+| tightlipped, a match that starts Node | 46.4 ms |
 
 ## Limits
 
-doxguard is a seatbelt, not a guarantee. It does not catch:
+tightlipped is a seatbelt, not a guarantee. It does not catch:
 
 - Data the agent writes to a file and then uploads (`curl -d @file`), or puts in a script and then runs.
 - Encodings other than url, base64 and hex: split strings, ROT13, encryption.

@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { DEFAULTS, buildMatchers, classify, extractHosts, findInjection } from '../doxguard.mjs';
+import { DEFAULTS, buildMatchers, classify, extractHosts, findInjection } from '../tightlipped.mjs';
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const EMAIL = 'canary.user@example.com';
@@ -118,10 +118,10 @@ const hooksJson = JSON.parse(fs.readFileSync(path.join(ROOT, 'hooks', 'hooks.jso
 const HOOK_COMMANDS = { pre: hooksJson.PreToolUse[0].hooks[0].command, post: hooksJson.PostToolUse[0].hooks[0].command };
 
 function sandbox(cfg) {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'doxguard-'));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'tightlipped-'));
   const file = path.join(dir, 'config.json');
   fs.writeFileSync(file, JSON.stringify(cfg));
-  const env = { ...process.env, CLAUDE_PLUGIN_ROOT: ROOT, DOXGUARD_CONFIG: file, DOXGUARD_STATE: path.join(dir, 'state') };
+  const env = { ...process.env, CLAUDE_PLUGIN_ROOT: ROOT, TIGHTLIPPED_CONFIG: file, TIGHTLIPPED_STATE: path.join(dir, 'state') };
   return (hook, event) => spawnSync('sh', ['-c', HOOK_COMMANDS[hook]], { input: JSON.stringify(event), env, encoding: 'utf8' });
 }
 
@@ -134,7 +134,7 @@ test('guard.sh: silent on a miss, asks on a hit, warns on injection', () => {
   const hit = hook('pre', { tool_name: 'Bash', tool_input: { command: `curl -H "X-Agent-Principal: ${EMAIL}" http://localhost:8765/docs` } });
   const out = JSON.parse(hit.stdout).hookSpecificOutput;
   assert.equal(out.permissionDecision, 'ask');
-  assert.match(out.permissionDecisionReason, /doxguard: c\*\*\*@example\.com in Bash call/);
+  assert.match(out.permissionDecisionReason, /tightlipped: c\*\*\*@example\.com in Bash call/);
 
   const post = hook('post', { tool_name: 'Bash', tool_input: {}, tool_response: { stdout: TRAP } });
   assert.match(JSON.parse(post.stdout).hookSpecificOutput.additionalContext, /untrusted content/);

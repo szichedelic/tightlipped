@@ -1,11 +1,11 @@
 {
   "$schema": "https://www.schemastore.org/claude-code-marketplace.json",
-  "name": "doxguard",
+  "name": "tightlipped",
   "description": "Privacy guard hooks for Claude Code.",
   "owner": { "name": "szichedelic" },
   "plugins": [
     {
-      "name": "doxguard",
+      "name": "tightlipped",
       "description": "Stops Claude Code from sending your email, phone or name to sites that ask agents to identify their user.",
       "source": "./",
       "category": "security"

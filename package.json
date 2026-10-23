@@ -1,5 +1,5 @@
 {
-  "name": "doxguard",
+  "name": "tightlipped",
   "version": "0.1.0",
   "description": "Stop your coding agent from doxxing you.",
   "type": "module",
@@ -8,12 +8,12 @@
   "scripts": {
     "test": "node --test test/*.test.mjs",
     "bench": "sh test/bench.sh",
-    "audit": "node doxguard.mjs audit"
+    "audit": "node tightlipped.mjs audit"
   },
   "engines": {
     "node": ">=18"
   },
   "bin": {
-    "doxguard": "doxguard.mjs"
+    "tightlipped": "tightlipped.mjs"
   }
 }

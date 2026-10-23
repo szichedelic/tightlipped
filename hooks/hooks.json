@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|WebFetch|WebSearch|mcp__.*",
+        "hooks": [{ "type": "command", "command": "set -- pre; . \"${CLAUDE_PLUGIN_ROOT}/hooks/guard.sh\"", "timeout": 10 }]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash|WebFetch|mcp__.*",
+        "hooks": [{ "type": "command", "command": "set -- post; . \"${CLAUDE_PLUGIN_ROOT}/hooks/guard.sh\"", "timeout": 10 }]
+      }
+    ]
+  }
+}

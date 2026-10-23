@@ -1,0 +1,14 @@
+{
+  "name": "doxguard",
+  "version": "0.1.0",
+  "description": "Stop your coding agent from doxxing you.",
+  "type": "module",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "bench": "sh test/bench.sh",
+    "audit": "node doxguard.mjs audit"
+  },
+  "engines": { "node": ">=18" }
+}

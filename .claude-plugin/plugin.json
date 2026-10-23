@@ -1,0 +1,9 @@
+{
+  "name": "doxguard",
+  "version": "0.1.0",
+  "description": "Stops Claude Code from sending your email, phone or name to sites that ask agents to identify their user.",
+  "author": { "name": "szichedelic", "url": "https://github.com/szichedelic" },
+  "repository": "https://github.com/szichedelic/doxguard",
+  "license": "MIT",
+  "keywords": ["security", "privacy", "pii", "prompt-injection", "hooks"]
+}

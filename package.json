@@ -10,5 +10,10 @@
     "bench": "sh test/bench.sh",
     "audit": "node doxguard.mjs audit"
   },
-  "engines": { "node": ">=18" }
+  "engines": {
+    "node": ">=18"
+  },
+  "bin": {
+    "doxguard": "doxguard.mjs"
+  }
 }

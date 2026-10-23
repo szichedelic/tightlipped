@@ -53,9 +53,10 @@ Requires Node 18 or later and a POSIX shell.
 You do not need to install the plugin to run the audit:
 
 ```sh
-git clone https://github.com/szichedelic/doxguard
-node doxguard/doxguard.mjs audit --email you@example.com
+npx github:szichedelic/doxguard audit
 ```
+
+It checks for your `git config user.email`. Add `--email you@example.com` to check another address.
 
 With the plugin installed, run `/doxguard:audit`. The audit reads `~/.claude/projects` locally and sends nothing anywhere. It masks values in its output (`y***@example.com`).
 
